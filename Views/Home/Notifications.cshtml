@@ -1,0 +1,26 @@
+@model List<EventBookingSystem.Models.Notification>
+@{ ViewData["Title"] = "Notifications"; }
+
+<h3><i class="bi bi-bell-fill me-2"></i>Notifications</h3>
+<p class="text-muted small">Updates delivered by the Observer Pattern.</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-light text-center">No notifications yet.</div>
+}
+else
+{
+    <div class="list-group">
+    @foreach (var n in Model)
+    {
+        <div class="list-group-item @(n.IsRead ? "" : "list-group-item-light border-start border-primary border-4")">
+            <div class="d-flex justify-content-between">
+                <h6 class="mb-1">@n.Title</h6>
+                <small class="text-muted">@n.CreatedAt.ToString("dd MMM yyyy HH:mm")</small>
+            </div>
+            <p class="mb-1 small">@n.Message</p>
+            <small class="text-muted">Audience: @n.AudienceRole</small>
+        </div>
+    }
+    </div>
+}

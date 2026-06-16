@@ -1,0 +1,63 @@
+@model List<EventBookingSystem.Models.Event>
+@{
+    ViewData["Title"] = "Browse Events";
+    var categories = ViewBag.Categories as IEnumerable<string> ?? Enumerable.Empty<string>();
+    var selected = (string)(ViewBag.Category ?? "All");
+}
+
+<h3 class="mb-3"><i class="bi bi-search me-2"></i>Browse Events</h3>
+
+<form class="row g-2 mb-4" method="get">
+    <div class="col-md-6">
+        <input name="search" value="@ViewBag.Search" class="form-control" placeholder="Search by title or venue..." />
+    </div>
+    <div class="col-md-4">
+        <select name="category" class="form-select">
+            @foreach (var c in categories)
+            {
+                if (c == selected)
+                {
+                    <option value="@c" selected>@c</option>
+                }
+                else
+                {
+                    <option value="@c">@c</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-md-2"><button class="btn btn-primary w-100">Filter</button></div>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No events found.</div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var ev in Model)
+        {
+            var minPrice = ev.Categories.Any() ? ev.Categories.Min(c => c.Price) : 0;
+            <div class="col-md-4">
+                <div class="card event-card h-100 shadow-sm">
+                    <div class="card-img-top"><i class="bi bi-calendar-event"></i></div>
+                    <div class="card-body">
+                        <span class="badge bg-primary">@ev.Category</span>
+                        <h5 class="card-title mt-2">@ev.Title</h5>
+                        <p class="small text-muted mb-2">
+                            <i class="bi bi-geo-alt"></i> @ev.Venue<br />
+                            <i class="bi bi-calendar3"></i> @ev.EventDate.ToString("dd MMM yyyy")
+                        </p>
+                        <p class="fw-bold text-success mb-0">From RM @minPrice.ToString("F2")</p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a class="btn btn-outline-primary w-100" asp-action="Details" asp-route-id="@ev.EventId">
+                            View & Book
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

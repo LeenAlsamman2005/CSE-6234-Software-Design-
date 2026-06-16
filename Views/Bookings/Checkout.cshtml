@@ -1,0 +1,74 @@
+@model EventBookingSystem.Models.Event
+@{ ViewData["Title"] = "Checkout"; }
+
+<h3><i class="bi bi-bag-check me-2"></i>Checkout — @Model.Title</h3>
+<p class="text-muted">@Model.Venue &middot; @Model.EventDate.ToString("dd MMM yyyy HH:mm")</p>
+
+<form method="post" asp-action="Checkout" asp-route-eventId="@Model.EventId">
+    @Html.AntiForgeryToken()
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5>1. Select Tickets</h5>
+            @foreach (var c in Model.Categories)
+            {
+                <div class="ticket-row d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong>@c.Name</strong> &mdash; RM @c.Price.ToString("F2")
+                        <br /><small class="text-muted">@c.Available available</small>
+                    </div>
+                    <div>
+                        <input type="number" name="quantities[@c.TicketCategoryId]"
+                               min="0" max="@c.Available" value="0"
+                               class="form-control" style="width:90px"
+                               @(c.Available == 0 ? "disabled" : "") />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <h5>2. Payment Method <small class="text-muted">(Strategy Pattern)</small></h5>
+            <div class="btn-group w-100 mb-3" role="group">
+                <input type="radio" class="btn-check" name="paymentMethod" id="pm1" value="CreditCard" checked
+                       onclick="showPanel('cc')" />
+                <label class="btn btn-outline-primary" for="pm1"><i class="bi bi-credit-card"></i> Credit Card</label>
+                <input type="radio" class="btn-check" name="paymentMethod" id="pm2" value="OnlineBanking"
+                       onclick="showPanel('ob')" />
+                <label class="btn btn-outline-primary" for="pm2"><i class="bi bi-bank"></i> Online Banking</label>
+                <input type="radio" class="btn-check" name="paymentMethod" id="pm3" value="EWallet"
+                       onclick="showPanel('ew')" />
+                <label class="btn btn-outline-primary" for="pm3"><i class="bi bi-wallet2"></i> E-Wallet</label>
+            </div>
+
+            <div id="cc-panel">
+                <label class="form-label small">Card Number</label>
+                <input name="cardNumber" class="form-control" placeholder="4111 1111 1111 1111" />
+            </div>
+            <div id="ob-panel" style="display:none">
+                <label class="form-label small">Bank</label>
+                <select name="bank" class="form-select">
+                    <option>Maybank</option><option>CIMB</option><option>RHB</option><option>Public Bank</option>
+                </select>
+            </div>
+            <div id="ew-panel" style="display:none">
+                <label class="form-label small">Wallet ID</label>
+                <input name="walletId" class="form-control" placeholder="EW-12345" />
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success btn-lg w-100">
+        <i class="bi bi-lock-fill me-1"></i> Confirm & Pay
+    </button>
+</form>
+
+<script>
+function showPanel(p){
+    document.getElementById('cc-panel').style.display = p==='cc'?'block':'none';
+    document.getElementById('ob-panel').style.display = p==='ob'?'block':'none';
+    document.getElementById('ew-panel').style.display = p==='ew'?'block':'none';
+}
+</script>

@@ -1,0 +1,60 @@
+@model EventBookingSystem.Models.Event
+@{
+    ViewData["Title"] = "Edit Event";
+    var cats = ViewBag.Categories as IEnumerable<string> ?? Enumerable.Empty<string>();
+}
+
+<h3><i class="bi bi-pencil me-2"></i>Edit Event</h3>
+<form method="post" class="card shadow-sm border-0 p-4">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="EventId" />
+    <div class="row g-3">
+        <div class="col-md-8">
+            <label class="form-label">Title</label>
+            <input asp-for="Title" class="form-control" required />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Category</label>
+            <select asp-for="Category" class="form-select">
+                @foreach (var c in cats) { <option>@c</option> }
+            </select>
+        </div>
+        <div class="col-md-8">
+            <label class="form-label">Venue</label>
+            <input asp-for="Venue" class="form-control" required />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Date</label>
+            <input asp-for="EventDate" type="datetime-local" class="form-control" required />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Status</label>
+            <select asp-for="Status" class="form-select" asp-items="Html.GetEnumSelectList<EventBookingSystem.Models.EventStatus>()"></select>
+        </div>
+        <div class="col-12">
+            <label class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        </div>
+    </div>
+
+    <hr />
+    <h5>Existing Ticket Categories</h5>
+    <table class="table">
+        <thead><tr><th>Name</th><th>Price</th><th>Total</th><th>Sold</th><th>Available</th></tr></thead>
+        <tbody>
+        @foreach (var c in Model.Categories)
+        {
+            <tr>
+                <td>@c.Name</td>
+                <td>RM @c.Price.ToString("F2")</td>
+                <td>@c.TotalQuantity</td>
+                <td>@c.SoldQuantity</td>
+                <td>@c.Available</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <button class="btn btn-primary"><i class="bi bi-save"></i> Save</button>
+    <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
+</form>

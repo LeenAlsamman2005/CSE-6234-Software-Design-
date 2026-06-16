@@ -1,0 +1,51 @@
+@model List<EventBookingSystem.Models.Booking>
+@{ ViewData["Title"] = "My Bookings"; }
+
+<h3><i class="bi bi-clock-history me-2"></i>Booking History</h3>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">You have no bookings yet. <a asp-controller="Events" asp-action="Index">Browse events</a>.</div>
+}
+else
+{
+    <div class="table-responsive">
+    <table class="table table-hover align-middle bg-white shadow-sm">
+        <thead class="table-light">
+            <tr><th>Ref</th><th>Event</th><th>Date</th><th>Tickets</th><th>Total</th><th>Status</th><th>Payment</th><th></th></tr>
+        </thead>
+        <tbody>
+        @foreach (var b in Model)
+        {
+            var badge = b.Status switch
+            {
+                EventBookingSystem.Models.BookingStatus.Confirmed => "badge-status-confirmed",
+                EventBookingSystem.Models.BookingStatus.Pending => "badge-status-pending",
+                EventBookingSystem.Models.BookingStatus.Cancelled => "badge-status-cancelled",
+                _ => "badge-status-rescheduled"
+            };
+            <tr>
+                <td><code>B@(b.BookingId.ToString("D5"))</code></td>
+                <td>@b.Event?.Title</td>
+                <td>@b.BookingDate.ToString("dd MMM yyyy")</td>
+                <td>@b.Tickets.Count</td>
+                <td>RM @b.TotalAmount.ToString("F2")</td>
+                <td><span class="badge @badge">@b.Status</span></td>
+                <td>@(b.Payment?.Status.ToString() ?? "-")</td>
+                <td>
+                    <a class="btn btn-sm btn-outline-primary" asp-action="Confirmation" asp-route-id="@b.BookingId">View</a>
+                    @if (b.Status == EventBookingSystem.Models.BookingStatus.Confirmed)
+                    {
+                        <form method="post" asp-action="Cancel" asp-route-id="@b.BookingId" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <button class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('Cancel this booking?')">Cancel</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    </div>
+}

@@ -1,0 +1,52 @@
+@model EventBookingSystem.Models.Booking
+@{ ViewData["Title"] = "Booking Confirmed"; }
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4 text-center">
+        <i class="bi bi-check-circle-fill display-1 text-success"></i>
+        <h2 class="mt-3">Booking Confirmed!</h2>
+        <p class="text-muted">Reference #B@(Model.BookingId.ToString("D5"))</p>
+    </div>
+</div>
+
+<div class="row g-3 mt-1">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body">
+                <h5><i class="bi bi-calendar-event"></i> Event</h5>
+                <p class="mb-1"><strong>@Model.Event!.Title</strong></p>
+                <p class="text-muted small">@Model.Event.Venue<br />@Model.Event.EventDate.ToString("dd MMM yyyy HH:mm")</p>
+                <hr />
+                <h6>Tickets</h6>
+                <ul class="list-unstyled small">
+                @foreach (var t in Model.Tickets)
+                {
+                    <li>
+                        <i class="bi bi-ticket-perforated"></i>
+                        @t.TicketCategory?.Name &mdash; Seat @t.SeatNumber &mdash; RM @t.Price.ToString("F2")
+                    </li>
+                }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 h-100">
+            <div class="card-body">
+                <h5><i class="bi bi-credit-card-2-front"></i> Payment</h5>
+                <p class="mb-1">Method: <strong>@Model.Payment?.PaymentMethod</strong></p>
+                <p class="mb-1">Reference: <code>@Model.Payment?.Reference</code></p>
+                <p class="mb-1">Status:
+                    <span class="badge bg-success">@Model.Payment?.Status</span>
+                </p>
+                <hr />
+                <h3 class="text-success mb-0">Total: RM @Model.TotalAmount.ToString("F2")</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center mt-4">
+    <a asp-action="History" class="btn btn-primary"><i class="bi bi-list-ul"></i> My Bookings</a>
+    <a asp-controller="Events" asp-action="Index" class="btn btn-outline-primary">Browse More Events</a>
+</div>

@@ -1,0 +1,27 @@
+@model EventBookingSystem.Services.OrganizerReport
+@{ ViewData["Title"] = "Reports"; }
+
+<h3><i class="bi bi-bar-chart me-2"></i>Sales Report</h3>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4"><div class="stat-card"><div class="lbl">Total Events</div><div class="num">@Model.TotalEvents</div></div></div>
+    <div class="col-md-4"><div class="stat-card"><div class="lbl">Confirmed Bookings</div><div class="num">@Model.TotalBookings</div></div></div>
+    <div class="col-md-4"><div class="stat-card"><div class="lbl">Revenue</div><div class="num">RM @Model.TotalRevenue.ToString("F2")</div></div></div>
+</div>
+
+<table class="table bg-white shadow-sm">
+    <thead class="table-light">
+        <tr><th>Event</th><th>Bookings</th><th>Tickets Sold</th><th>Revenue</th></tr>
+    </thead>
+    <tbody>
+    @foreach (var r in Model.Rows)
+    {
+        <tr>
+            <td>@r.Title</td>
+            <td>@r.Bookings</td>
+            <td>@r.TicketsSold</td>
+            <td>RM @r.Revenue.ToString("F2")</td>
+        </tr>
+    }
+    </tbody>
+</table>

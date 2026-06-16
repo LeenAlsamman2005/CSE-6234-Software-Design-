@@ -1,0 +1,14 @@
+@model EventBookingSystem.Services.AdminReport
+@{ ViewData["Title"] = "Admin Reports"; }
+
+<h3><i class="bi bi-graph-up me-2"></i>System Reports</h3>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="stat-card"><div class="lbl">Users</div><div class="num">@Model.TotalUsers</div></div></div>
+    <div class="col-md-3"><div class="stat-card"><div class="lbl">Customers</div><div class="num">@Model.TotalCustomers</div></div></div>
+    <div class="col-md-3"><div class="stat-card"><div class="lbl">Organizers</div><div class="num">@Model.TotalOrganizers</div></div></div>
+    <div class="col-md-3"><div class="stat-card"><div class="lbl">Events</div><div class="num">@Model.TotalEvents</div></div></div>
+    <div class="col-md-4"><div class="stat-card"><div class="lbl">Confirmed Bookings</div><div class="num">@Model.TotalBookings</div></div></div>
+    <div class="col-md-4"><div class="stat-card"><div class="lbl">Gross Revenue</div><div class="num">RM @Model.GrossRevenue.ToString("F2")</div></div></div>
+    <div class="col-md-4"><div class="stat-card"><div class="lbl">Failed Payments</div><div class="num">@Model.FailedPayments</div></div></div>
+</div>

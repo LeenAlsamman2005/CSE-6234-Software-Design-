@@ -1,0 +1,83 @@
+@{
+    ViewData["Title"] = "Home";
+    var events = ViewBag.UpcomingEvents as List<EventBookingSystem.Models.Event> ?? new();
+}
+
+<section class="hero text-center">
+    <h1 class="display-4 fw-bold mb-3">Book Events. Reserve Seats. Pay Securely.</h1>
+    <p class="lead mb-4">An end-to-end e-commerce event booking platform built with C#, ASP.NET Core, and proven design patterns.</p>
+    <a class="btn btn-light btn-lg me-2" asp-controller="Events" asp-action="Index">
+        <i class="bi bi-search me-1"></i> Browse Events
+    </a>
+    @if (!Context.IsAuthenticated())
+    {
+        <a class="btn btn-outline-light btn-lg" asp-controller="Account" asp-action="Register">Get Started</a>
+    }
+</section>
+
+<h3 class="mb-3"><i class="bi bi-stars me-2"></i>Upcoming Events</h3>
+@if (!events.Any())
+{
+    <div class="alert alert-info">No events available right now. Check back soon!</div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var ev in events)
+        {
+            <div class="col-md-4">
+                <div class="card event-card shadow-sm h-100">
+                    <div class="card-img-top"><i class="bi bi-calendar-event"></i></div>
+                    <div class="card-body">
+                        <span class="badge bg-primary">@ev.Category</span>
+                        <h5 class="card-title mt-2">@ev.Title</h5>
+                        <p class="card-text small text-muted">
+                            <i class="bi bi-geo-alt"></i> @ev.Venue<br />
+                            <i class="bi bi-clock"></i> @ev.EventDate.ToString("dd MMM yyyy, HH:mm")
+                        </p>
+                        <p class="card-text small">@(ev.Description.Length > 90 ? ev.Description.Substring(0,90) + "..." : ev.Description)</p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a class="btn btn-primary w-100" asp-controller="Events" asp-action="Details" asp-route-id="@ev.EventId">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<section class="mt-5 py-4 bg-white rounded-3 shadow-sm px-4">
+    <h4 class="mb-4 text-center"><i class="bi bi-diagram-3 me-2"></i>Architecture & Design Patterns</h4>
+    <div class="row text-center g-3">
+        <div class="col-md-3">
+            <div class="p-3 border rounded-3">
+                <i class="bi bi-gear-fill display-5 text-primary"></i>
+                <h6 class="mt-2">Factory Method</h6>
+                <small class="text-muted">UserFactory creates Customer/Organizer/Admin</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-3 border rounded-3">
+                <i class="bi bi-credit-card-2-front display-5 text-success"></i>
+                <h6 class="mt-2">Strategy</h6>
+                <small class="text-muted">CreditCard / OnlineBanking / E-Wallet</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-3 border rounded-3">
+                <i class="bi bi-broadcast display-5 text-warning"></i>
+                <h6 class="mt-2">Observer</h6>
+                <small class="text-muted">Booking notifies Customer/Organizer/Admin</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="p-3 border rounded-3">
+                <i class="bi bi-layers-fill display-5 text-info"></i>
+                <h6 class="mt-2">Facade</h6>
+                <small class="text-muted">BookingFacade orchestrates checkout</small>
+            </div>
+        </div>
+    </div>
+</section>

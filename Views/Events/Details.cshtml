@@ -1,0 +1,61 @@
+@model EventBookingSystem.Models.Event
+@{ ViewData["Title"] = Model.Title; }
+
+<a asp-action="Index" class="text-decoration-none small"><i class="bi bi-arrow-left"></i> Back</a>
+
+<div class="card shadow-sm mt-2 border-0">
+    <div class="card-body p-4">
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <span class="badge bg-primary">@Model.Category</span>
+                <h2 class="mt-2">@Model.Title</h2>
+            </div>
+            <span class="badge bg-secondary fs-6">@Model.Status</span>
+        </div>
+        <p class="text-muted">
+            <i class="bi bi-geo-alt-fill"></i> @Model.Venue &nbsp;|&nbsp;
+            <i class="bi bi-clock-fill"></i> @Model.EventDate.ToString("dddd, dd MMM yyyy HH:mm") &nbsp;|&nbsp;
+            <i class="bi bi-person-fill"></i> @(Model.Organizer?.Name ?? "Organizer")
+        </p>
+        <p>@Model.Description</p>
+
+        <h5 class="mt-4">Ticket Categories</h5>
+        <table class="table">
+            <thead><tr><th>Category</th><th>Price</th><th>Available</th></tr></thead>
+            <tbody>
+            @foreach (var c in Model.Categories)
+            {
+                <tr>
+                    <td>@c.Name</td>
+                    <td>RM @c.Price.ToString("F2")</td>
+                    <td>
+                        @if (c.Available > 0)
+                        {
+                            <span class="text-success">@c.Available left</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger">Sold out</span>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+        @if (Context.IsInRole(UserRole.Customer))
+        {
+            <a class="btn btn-primary btn-lg" asp-controller="Bookings" asp-action="Checkout" asp-route-eventId="@Model.EventId">
+                <i class="bi bi-bag-check"></i> Book Now
+            </a>
+        }
+        else if (!Context.IsAuthenticated())
+        {
+            <a class="btn btn-primary" asp-controller="Account" asp-action="Login">Login as Customer to Book</a>
+        }
+        else
+        {
+            <div class="alert alert-warning">Only customers can book tickets.</div>
+        }
+    </div>
+</div>

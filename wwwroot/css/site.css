@@ -1,0 +1,60 @@
+html, body { height: 100%; }
+body { display: flex; flex-direction: column; min-height: 100vh; font-family: 'Segoe UI', system-ui, sans-serif; }
+main { flex: 1; }
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #4a00e0 0%, #8e2de2 100%);
+}
+
+.hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 1rem;
+    padding: 3rem 2rem;
+    margin-bottom: 2rem;
+}
+
+.event-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+.event-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.event-card .card-img-top {
+    height: 160px;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 3rem;
+}
+
+.ticket-row {
+    background: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.badge-status-confirmed { background: #198754; }
+.badge-status-pending { background: #ffc107; color: #000; }
+.badge-status-cancelled { background: #dc3545; }
+.badge-status-rescheduled { background: #0dcaf0; color: #000; }
+
+.stat-card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border-left: 4px solid #4a00e0;
+}
+.stat-card .num { font-size: 2rem; font-weight: 700; color: #4a00e0; }
+.stat-card .lbl { color: #6c757d; font-size: 0.875rem; text-transform: uppercase; }
+
+.footer { background: #1a1a2e !important; }
