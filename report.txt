@@ -1,0 +1,1783 @@
+  CSE 6234 ­ Software Design
+        Assignment (30%)
+
+     Tutorial Section: TT5L
+       Group Number: 09
+
+   Lecturer: Chan Ming Man
+
+                Student        Student ID
+           Leen Alsamman      1221308098
+                              243UC246KC
+             Hanan Esam       243UC245Y2
+  Zenab Hosameldin Karamalla
+
+
+
+                                           1
+Table of content:
+
+    Table of content:.................................................................................................................... 2
+         1. Introduction.................................................................................................................. 4
+              1.2 Abstract:.................................................................................................................5
+              1.3 Problem statement:................................................................................................6
+              1.4 Project Objectives:................................................................................................. 6
+              1.5 Literature Review:.................................................................................................. 7
+              Review 1: Web based event ticket booking systems................................................... 7
+              Review 2: Integrated booking and payment systems.................................................. 8
+              Review 3: Secure validation, scalability, and real-time booking challenges................ 8
+              1.6 Project and System Scope:....................................................................................9
+         2. System Overview:...................................................................................................... 10
+              2.1 Generic Use Case The system supports three primary actors:........................... 10
+                   Figure 2.1............................................................................................................. 12
+              2.2 Class Diagrams:...................................................................................................12
+                   Figure 2.2............................................................................................................. 15
+              2.3 Entity Relationship Diagram (ERD)......................................................................15
+                   Figure 2.3............................................................................................................. 17
+              2.4 Object Diagrams.................................................................................................. 17
+              Figure 2.4...................................................................................................................18
+              2.5 Sequence diagram...............................................................................................18
+
+    3.1 Design Concepts............................................................................................................. 20
+          3.1.1 Abstraction..............................................................................................................20
+         3.1.2 Modularity............................................................................................................... 21
+            3.1.2.1 High cohesion................................................................................................... 21
+            3.1.2.2 Low coupling..................................................................................................... 22
+         3.1.3 Encapsulation......................................................................................................... 22
+         3.1.4 Functional independence........................................................................................23
+         3.1.5 Refinement..............................................................................................................23
+
+    3.2 Functional Requirements.................................................................................................23
+         3.2.1 Functional needs for Customer...............................................................................23
+         3.2.2 Functional needs for Event Organizers...................................................................24
+         3.2.3 Functional needs for Event Administrators............................................................. 24
+
+    3.3 Non-Functional Requirements......................................................................................... 24
+              3.3.1 Performance Requirements.............................................................................. 24
+              3.3.2 Security Requirements......................................................................................24
+              3.3.3 Usability Requirements..................................................................................... 25
+
+                                                                                                                               2
+    3.3.4 Reliability Requirements................................................................................... 25
+4. Proposed Design Patterns........................................................................................ 25
+
+         a. Design Pattern 1: Factory Method Pattern.......................................................25
+         i. Function or software component affected......................................................... 25
+         ii. Description of the workflow or data flow........................................................... 26
+         iii. Sample class diagram..................................................................................... 26
+         iv. Sample other UML notations:.......................................................................... 26
+         vi. Benefit............................................................................................................. 28
+         vii. Limitations.......................................................................................................29
+         b. Design Pattern 2: Strategy Pattern.................................................................. 29
+         i. Function or software component affected......................................................... 29
+         ii. Description of workflow or data flow................................................................. 29
+         iii. Sample class diagram:.................................................................................... 30
+         iv. Sample other UML notations........................................................................... 30
+         v. Sample potential code:..................................................................................... 30
+         vi. Benefit............................................................................................................. 31
+         vii. Limitations.......................................................................................................31
+c. Design Pattern 3: Observer Pattern............................................................................. 32
+         i. Function or software component affected......................................................... 32
+         ii. Description of workflow or data flow................................................................. 32
+         iii. Sample class diagram..................................................................................... 33
+         Iv. sample other uml diagram............................................................................... 33
+         v. sample code..................................................................................................... 33
+         vi.Benefits.............................................................................................................35
+         vii.Limitations........................................................................................................35
+5. Conclusion and Suggestions................................................................................... 36
+    5.1 Conclusion........................................................................................................... 36
+6. Bibliography / Reference...........................................................................................37
+
+                                                                                                                     3
+   1.Introduction
+
+The rapid growth of digital commerce has transformed how customers discover, reserve,
+and pay for products and services online. In addition to conventional retail shopping,
+e-commerce now supports service-oriented transactions such as hotel reservations,
+appointment scheduling, transport ticketing, and event ticket booking through
+integrated online platforms.
+
+Among these domains, event booking systems have become increasingly important
+because customers expect a convenient way to browse upcoming events, compare ticket
+options, complete payments securely, and receive immediate confirmation without
+relying on manual counters or paper-based processes.
+
+Traditional event ticketing methods often involve long queues, manual record handling,
+delayed confirmation, weak tracking of ticket usage, and higher risk of duplication or
+fraud. Recent work on digital ticketing systems shows that modern event platforms
+increasingly rely on web-based architectures, role-based access control, centralized
+booking records, and automated validation mechanisms to improve efficiency and
+reliability.
+
+An integrated booking-and-payment platform is especially valuable because it keeps
+reservation, payment, and confirmation in a single workflow, reducing operational
+overhead and improving data consistency for both customers and event organizers.
+
+The proposed project, E-Commerce Event Booking System, is designed as an
+online platform that enables users to search for events, select ticket categories or seats,
+complete secure payment, and receive booking confirmation through a centralized
+system. At the same time, organizers can manage events, ticket quantities, schedules,
+and booking records, while administrators supervise users, monitor transactions, and
+generate reports for operational control.
+Following the software design concepts in the lecture, the system can be divided into
+cohesive modules such as User Management, Event Management, Booking, Payment,
+Notification, and Reporting, allowing the design to reflect abstraction, modularity,
+information hiding, and refinement in a structured way.
+
+                                                                                                                               4
+This project is suitable for a software design assignment because it presents a
+well-defined transaction flow from event discovery to booking completion, making it
+easier to model through use case diagrams, class diagrams, ERD, object diagrams, and
+sequence diagrams. It also supports the practical application of design principles such as
+high cohesion, low coupling, and functional independence, which are emphasized in the
+lecture materials.
+In addition, suitable design patterns such as Factory Method for user-role creation,
+Strategy for payment processing, and Observer for booking and event notifications can
+be incorporated naturally into the solution without forcing unnecessary complexity.
+
+1.2 Abstract:
+
+The E-Commerce Event Booking System is proposed as a web-based platform that
+facilitates the online booking and purchase of event tickets in a secure, efficient, and
+user-friendly manner. The system allows customers to register accounts, browse
+available events, select ticket categories or seats, make online payments, and receive
+booking confirmations through a centralized booking interface.
+In parallel, event organizers are provided with facilities to create and manage event
+listings, control ticket availability, and monitor booking activities, while administrators
+oversee user accounts, booking transactions, and system performance.
+
+The proposed system adopts a modular design structure to support maintainability,
+scalability, and ease of future enhancement. Core modules include user management,
+event management, booking processing, payment handling, notification services, and
+administrative reporting, each with clearly separated responsibilities to align with sound
+software design practice.
+This design approach supports high cohesion and low coupling, making the system
+easier to test, maintain, and extend as new features are introduced.
+
+To strengthen flexibility and extensibility, the system may employ established
+object-oriented design patterns. Factory Method can be applied to create different
+user-role objects, Strategy can support multiple payment methods, and Observer can be
+used to notify users regarding booking confirmation, schedule changes, or event
+reminders.
+Overall, the project provides a structured and realistic e-commerce solution for digital
+event ticketing while demonstrating the practical application of software design
+concepts, UML modeling, and design patterns in a domain that is both commercially
+relevant and academically manageable.
+
+                                                                                                                               5
+1.3 Problem statement:
+
+The increasing demand for online event participation has created a need for digital
+platforms that can support efficient event discovery, reservation, and payment
+processing. However, many traditional or poorly integrated ticketing approaches still
+depend on manual booking procedures, fragmented payment handling, delayed
+confirmation, and weak validation mechanisms, which reduce customer convenience
+and increase operational burden for organizers.
+These issues are particularly serious when multiple users try to book limited tickets at
+the same time, because poor synchronization and weak transaction handling can lead to
+double booking, inaccurate ticket availability, and inconsistent system records.
+
+Another major challenge is the lack of centralized control over event, booking, and
+payment information. When booking, payment, and communication are handled
+through separate systems or spreadsheets, organizers may face errors in tracking sales,
+confirming reservations, processing cancellations, and managing attendance data.
+Integrated booking systems address this by keeping scheduling, payment, and
+communication in one place, thereby improving transparency and reducing confusion.
+Security is also a concern, since online platforms must protect user data, enforce
+role-based access control, and rely on secure payment processing and encrypted
+communication.
+
+From a software design perspective, a robust event booking platform must not only
+support the main transaction flow but also remain maintainable, scalable, and
+extensible as requirements evolve. Existing studies identify gaps such as weak real-time
+validation, insufficient role separation, limited support for notifications and analytics,
+and lack of extensibility for future services such as payment gateways and additional
+booking options.
+Therefore, there is a need for a well-structured E-Commerce Event Booking System that
+offers secure online booking, reliable transaction processing, controlled access for
+different user roles, and a modular architecture that supports future enhancement
+without major redesign.
+
+1.4 Project Objectives:
+
+The main objective of the E-Commerce Event Booking System is to provide a secure,
+efficient, and user-friendly platform for online event reservation and ticket purchasing.
+The system is intended to support the complete digital transaction cycle, including event
+browsing, ticket selection, payment processing, and booking confirmation, while also
+enabling organizers and administrators to manage event operations effectively.
+
+                                                                                                                               6
+Objectives of the project are as follows:
+     To enable customers to create accounts, log in securely, browse events, view
+         event details, select tickets, and complete online bookings conveniently.
+     To provide integrated payment support so that booking and payment status
+         remain synchronized within a single transaction flow.
+     To allow organizers to create, update, and manage events, including ticket
+         quantity, schedules, pricing, and booking visibility.
+     To enable administrators to monitor users, supervise bookings, generate reports,
+         and maintain overall system control.
+     To design the system using modular software design concepts such as
+         abstraction, modularity, information hiding, and refinement in order to improve
+         maintainability and extensibility.
+     To apply appropriate object-oriented design principles and patterns so that the
+         system remains flexible when adding new roles, payment options, or notification
+         services.
+     To reduce problems associated with manual or fragmented ticketing approaches,
+         including booking errors, weak tracking, and poor coordination between
+         reservation and payment activities.
+
+1.5 Literature Review:
+
+Web based event ticket booking systems
+
+Recent studies on web-based event booking systems show that digital ticketing
+platforms improve convenience by allowing users to browse events, reserve tickets, and
+retrieve booking history online through a centralized interface [2][3][5]. These systems
+generally rely on client-server or layered architectures, with dedicated modules for user
+management, event handling, and booking records [2][3][5].
+
+The literature also indicates that many earlier systems provided only basic booking
+functionality and lacked strong support for scalable workflows, role-based access
+control, and secure real-time ticket validation. As a result, modern implementations
+increasingly adopt modular architectures and structured APIs to improve
+maintainability and responsiveness across devices [2][3][4]
+
+This review is useful for the proposed project because it confirms that a web-based event
+booking system is a practical and relevant software domain [2]. It also supports
+designing the system as a modular platform rather than a monolithic collection of pages
+and functions, which is consistent with the lecture's emphasis on abstraction,
+modularity, and functional independence [1][6].
+
+                                                                                                                               7
+Integrated booking and payment systems
+
+Research and industry guidance on integrated booking-and-payment platforms
+emphasize that combining reservation management, payment processing, and
+confirmation in one system improves operational efficiency and reduces administrative
+workload [2][3][4][5]. A booking system with payment capability allows customers to
+reserve and pay in the same interface, while the platform automatically updates
+reservation status and sends confirmation or reminder communication [2][3][5].
+
+This integration also reduces the confusion caused by separate booking tools, payment
+processors, and manual spreadsheets, which can otherwise lead to inaccurate records,
+unpaid reservations, and difficult refund or cancellation handling [2][4].
+
+For the proposed event booking project, this literature strongly supports the inclusion of
+a Payment module that is tightly coordinated with booking status rather than treated as
+a disconnected external step [2]. It also justifies the application of Strategy Pattern for
+supporting multiple payment methods while keeping the checkout logic closed to major
+modification, which aligns with the Open-Closed Principle discussed in the course
+materials [1][6].
+
+Secure validation, scalability, and real-time booking challenges
+
+A recurring theme in the literature is that event ticketing systems face significant
+challenges under high demand, especially when users compete for limited tickets or
+seats [2]. Scalable ticket-booking designs must maintain accurate seat or ticket
+availability, prevent double booking, and preserve fairness during heavy concurrency
+[2][3]. Techniques such as strong consistency for reservation and payment steps,
+reliable seat locking, transaction coordination, and real-time status updates are
+highlighted as critical for system correctness [2][3].
+
+Related academic work on QR-code-based ticket validation further shows that secure
+and automated verification mechanisms can reduce ticket duplication, prevent
+unauthorized reuse, and improve entry management at event venues [4].
+
+This review matters because it identifies the core risks that the proposed system should
+address: concurrency conflicts, booking inconsistency, ticket misuse, and weak
+validation controls [2][4]. It also supports using clear module separation and
+transaction-oriented workflows in the design, which are consistent with the lecture's
+recommendations on refinement, information hiding, and low coupling between system
+components [6].
+
+                                                                                                                               8
+1.6 Project and System Scope:
+
+The scope of the E-Commerce Event Booking System covers the essential processes
+required to support online event ticket sales, booking management, payment
+coordination, and administrative supervision. The system is limited to the core digital
+workflow of event browsing, booking, payment, confirmation, and record management,
+with features chosen to keep the project realistic and academically manageable.
+
+Customer scope
+
+The customer side of the system includes the following capabilities:
+     Create and manage a personal account.
+     Log in securely to access booking features.
+     Browse available events and view detailed event information such as date, venue,
+         time, price, and ticket availability.
+     Select ticket categories or seat options, depending on the event type.
+     Make online payment through supported payment methods.
+     Receive booking confirmation and access booking history.
+     Receive notifications related to confirmation, schedule changes, or reminders, if
+         included in the final design.
+
+Organizer scope
+
+The organizer side of the system includes:
+     Log in securely to access organizer functions.
+     Create, update, and remove event listings.
+     Manage event schedules, ticket categories, pricing, and ticket quantity or seat
+         allocation.
+     Monitor customer bookings and booking status for managed events.
+     View event-related reports such as ticket sales or attendance summaries,
+         depending on final implementation scope.
+
+Admin scope
+
+The administrative side of the system includes:
+     Log in securely with role-based privile53ges.
+     Manage user accounts, including customer and organizer records.
+     Monitor bookings, payments, and system-level activity.
+     Generate reports for operational analysis and decision-making.
+
+System limitations
+
+                                                                                                                               9
+To keep the project within a practical academic scope, the following items may be
+excluded or simplified:
+
+     Advanced recommendation engines and personalized marketing.
+     Full-scale third-party analytics or accounting integration.
+     Complex large-scale distributed infrastructure for extreme traffic conditions.
+     Advanced fraud-prevention mechanisms beyond standard secure authentication
+
+         and payment handling.
+     Mobile-native applications, unless explicitly added as future work.
+
+Summary of scope direction
+
+The proposed scope focuses on building a structured and modular event-commerce
+platform that demonstrates the essential software design concepts required by the
+course. By restricting the system to core booking, payment, management, and reporting
+features, the project remains broad enough to support meaningful UML and
+design-pattern application while still being narrow enough to preserve clarity, cohesion,
+and manageable complexity.
+
+2. System Overview:
+
+The E-Commerce Event Booking System is designed as a modular, web-based platform that
+supports the complete lifecycle of event ticketing, from event discovery to booking confirmation
+and administrative monitoring. The system adopts a structured architecture composed of
+cohesive modules, namely User Management, Event Management, Booking, Payment,
+Notification, and Reporting, as introduced in Chapter 1. Each module is responsible for a
+specific aspect of the system, ensuring high cohesion, low coupling, and functional
+independence, which improves maintainability and scalability. From a design perspective, the
+system enforces role-based access control, ensuring that customers, organizers, and
+administrators interact with the system according to their defined responsibilities. The overall
+workflow follows a transaction-oriented model, where booking and payment are tightly
+integrated to maintain consistency, prevent double booking, and ensure real-time validation of
+ticket availability.
+
+                                                                                                                             10
+2.1 Generic Use Case The system supports three primary actors:
+
+ Customer: performs event browsing, ticket selection, booking, and payment
+ Event Organizer: manages event listings, ticket availability, and booking records
+ Administrator: oversees users, monitors transactions, and generates reports
+
+Shared Use Cases:
+ Register and log in securely
+
+Use Case Name  Descriptions       Register and log in securely
+Actor          Preconditions
+Normal flow                       Customer, Organizer, Administrator
+
+Alternative Flows and Exceptions  Allows registered users to securely access
+                                  the system using valid login credentials.
+
+                                  1. User account already exists.
+                                  2. User is registered in the system.
+                                  3. User has valid login credentials.
+
+                                  .A1. Invalid username or password
+
+                                  System displays an error message 
+                                  .and requests re-entry
+
+                                  .A2. Account is suspended or inactive
+
+                                  System denies access and displays 
+                                  .account status message
+
+                                  .A3. User forgets password
+
+                                  User selects "Forgot Password" 
+                                  option and system initiates
+                                  .password recovery process
+
+                                  .A4. System/server error occurs
+
+                                  System displays a temporary error 
+                                  .message and logs the issue
+
+                                                                                    11
+non functional requirements        The system shall protect payment
+                                      and user data.
+
+                                   The system shall be easy to use and
+                                      navigate.
+
+                                   The system shall maintain correct
+                                      booking and payment records.
+
+Customer Use Cases:
+ Browse and search for events
+
+Use Case Name  Descriptions       Browse and search for events
+Actor                             Customer
+Normal flow                       Allows customers to browse and search
+                                  available events.
+               Preconditions      Be logged in with Customer access
+                                  Event exist in the system
+Alternative Flows and Exceptions
+                                  .A1. No events available
+                                  ".System displays "No events found 
+                                  .A2. System loading issue
+                                  .System displays retry message 
+
+non functional requirements        The system shall respond quickly
+                                      during event browsing and booking.
+
+                                   The system shall be easy to use and
+                                      navigate.
+
+                                   The system shall maintain correct
+                                      booking and payment records.
+
+ View event details (date, venue, pricing, availability)
+
+Use Case Name                     View event details (date, venue, pricing,
+                                  availability)
+Actor          Descriptions
+Normal flow                       Customer
+
+                                  Allows customers to view detailed event
+                                  information.
+
+                                                                             12
+                              Preconditions  Be logged in with Customer access
+Alternative Flows and Exceptions             Event exists in the system.
+
+non functional requirements                  .A1. No matching events found
+                                             ".System displays "No results found 
+ Select tickets or seats                     .A2. Invalid search input
+                                             .System requests valid input 
+Use Case Name             Descriptions
+Actor                                             The system shall respond quickly
+Normal flow                                           during event browsing and booking.
+
+                          Preconditions           The system shall be easy to use and
+                                                      navigate.
+Alternative Flows and Exceptions
+                                                  The system shall maintain correct
+  non functional requirements                         booking and payment records.
+ Make online payment
+                                             Select tickets or seats
+                                             Customer
+                                             Allows customers to select tickets or seats
+                                             for an event.
+                                             Be logged in with Customer access
+                                             Tickets are available
+
+                                             .A1. Selected tickets unavailable
+                                             .System requests another selection 
+                                             .A2. Reservation timeout occurs
+                                             .System releases reserved tickets 
+
+                                                  The system shall respond quickly
+                                                      during event browsing and booking.
+
+                                                  The system shall be easy to use and
+                                                      navigate.
+
+                                                  The system shall maintain correct
+                                                      booking and payment records.
+
+                                                                                                          13
+Use Case Name  Descriptions       Make online payment
+Actor          Preconditions
+Normal flow                       Customer
+
+Alternative Flows and Exceptions  Allows customers to pay for selected tickets
+                                  online.
+
+                                  Be logged in with Customer access
+                                  Tickets are selected.
+                                  Booking is pending payment.
+
+                                  .A1. Payment declined
+
+                                  System requests another payment 
+                                  .attempt
+
+                                  .A2. Payment gateway unavailable
+
+                                  System displays temporary error 
+                                  .message
+
+non functional requirements                       The system shall respond quickly
+                                                     during event browsing and booking.
+
+                                                  The system shall protect payment
+                                                     and user data.
+
+                                                  The system shall be easy to use and
+                                                     navigate.
+
+                                                  The system shall maintain correct
+                                                     booking and payment records.
+
+ Receive booking confirmation and notifications
+
+Use Case Name                     Receive booking confirmation and
+                                  notifications
+Actor          Descriptions
+Normal flow                       Customer
+                                  Allows customers to receive booking
+               Preconditions      confirmation and notifications.
+                                  Be logged in with Customer access
+Alternative Flows and Exceptions  Payment successful
+
+                                  .A1. Notification delivery fails
+
+                                                                                         14
+non functional requirements                  .System retries sending notification 
+
+                                             .A2. Booking confirmation unavailable
+
+                                             .System alerts support administrator 
+
+                                                  The system shall protect payment
+                                                      and user data.
+
+                                                  The system shall be easy to use and
+                                                      navigate.
+
+                                                  The system shall maintain correct
+                                                      booking and payment records.
+
+ View booking history
+
+Use Case Name          Descriptions          View booking history
+Actor
+Normal flow                                  Customer
+                                             Allows customers to view previous booking
+                              Preconditions  records.
+Alternative Flows and Exceptions             Be logged in with Customer access
+
+non functional requirements                  .A1. No booking history available
+                                             System displays empty history 
+                                             .message
+                                             .A2. Data retrieval issue
+                                             .System displays error message 
+
+                                                  The system shall be easy to use and
+                                                      navigate.
+
+                                                  The system shall maintain correct
+                                                      booking and payment records.
+
+Organizer Use Cases:
+ Create, update, and delete event listings
+
+Use Case Name                                Create, update, and delete event listings
+
+                                                                                        15
+Actor          Descriptions                  Organizer
+Normal flow                                  Allows organizers to manage event listings.
+                                             Be logged in with Organizer access
+               Preconditions
+                                             .A1. Required fields missing
+Alternative Flows and Exceptions             System displays validation 
+                                             .message
+                                             A2. Event has active bookings during
+                                             .deletion
+                                             .System prevents deletion 
+                                             .A3. System save error occurs
+                                             .System displays failure message 
+
+non functional requirements                            The system shall be easy to use and
+                                                          navigate.
+
+                                                       The system shall maintain correct
+                                                          booking and payment records.
+
+ Manage ticket categories, pricing, and availability
+
+Use Case Name                                Manage ticket categories, pricing, and
+                                             availability
+
+Actor          Descriptions                  Organizer
+Normal flow                                  Allows organizers to manage ticket types,
+                                             pricing, and ticket availability.
+                              Preconditions  Be logged in with Organizer access
+Alternative Flows and Exceptions
+                                             .A1. Invalid pricing entered
+                                             .System displays validation error 
+                                             .A2. Ticket quantity exceeds venue capacity
+                                             .System prevents saving 
+
+                                                                                            16
+non functional requirements                        The system shall be easy to use and
+                                                       navigate.
+ Monitor bookings for their events
+                                                   The system shall maintain correct
+Use Case Name  Descriptions                            booking and payment records.
+Actor
+Normal flow                                  Monitor bookings for their events
+                                             Organizer
+                              Preconditions  Allows organizers to monitor bookings for
+Alternative Flows and Exceptions             their events.
+                                             Be logged in with Organizer access
+non functional requirements
+                                             .A1. No bookings available
+ View event-related reports                  .System displays empty booking list 
+                                             .A2. Data retrieval error occurs
+Use Case Name  Descriptions                  .System displays error message 
+Actor
+Normal flow                                        The system shall be easy to use and
+                                                       navigate.
+                              Preconditions
+Alternative Flows and Exceptions                   The system shall maintain correct
+                                                       booking and payment records.
+
+                                             View event-related reports
+                                             Organizer
+                                             Allows organizers to generate and view
+                                             event reports.
+                                             Be logged in with Organizer access
+
+                                             .A1. No report data available
+                                             .System displays notification 
+
+                                                                                        17
+non functional requirements                  .A2. Report generation failure
+
+                                             .System displays error message 
+
+                                                  The system shall be easy to use and
+                                                      navigate.
+
+                                                  The system shall maintain correct
+                                                      booking and payment records.
+
+Administrator Use Cases:
+ Manage user accounts (customers and organizers)
+
+Use Case Name                                Manage user accounts (customers and
+                                             organizers)
+Actor          Descriptions                  Administrator
+Normal flow                                  Allows administrators to manage customer
+                                             and organizer accounts.
+                              Preconditions  Be logged in with Administrator access
+Alternative Flows and Exceptions
+                                             .A1. Unauthorized action attempted
+                                             .System denies the action 
+                                             .A2. System update error occurs
+                                             .System displays error message 
+
+non functional requirements                   The system shall protect payment
+                                                 and user data.
+
+                                              The system shall be easy to use and
+                                                 navigate.
+
+                                              The system shall maintain correct
+                                                 booking and payment records.
+
+ Monitor bookings and payment transactions
+
+Use Case Name                                Monitor bookings and payment transactions
+Actor                                        Administrator
+
+                                                                                        18
+Normal flow    Description                   Allows administrators to monitor bookings and
+                                             payment transactions.
+               preconditions                 Be logged in with Administrator access
+                                             Booking and payment records exist.
+Alternative Flows and Exceptions
+                                             .A1. Data retrieval failure
+non functional requirements                  .System displays error message 
+                                             .A2. Suspicious transaction detected
+ Generate system-level reports               .System flags the transaction for review 
+
+Use Case Name  Descriptions                       The system shall protect payment and
+Actor                                                 user data.
+Normal flow
+                                                  The system shall be easy to use and
+                              Preconditions           navigate.
+Alternative Flows and Exceptions
+                                                  The system shall maintain correct
+  non functional requirements                         booking and payment records.
+ Maintain overall system control
+                                                Generate system-level reports
+                                                Administrator
+                                                Allows administrators to generate reports
+                                                for overall system performance.
+                                                Be logged in with Administrator access
+
+                                                .A1. No report data available
+                                                .System displays notification 
+                                                .A2. Report generation fails
+                                                .System displays error message 
+
+                                                      The system shall be easy to use and
+                                                          navigate.
+
+                                                      The system shall maintain correct
+                                                          booking and payment records.
+
+                                                                                            19
+Use Case Name  Descriptions                  Maintain overall system control
+Actor                                        Administrator
+Normal flow                                  Allows administrators to maintain and
+                                             configure overall system settings.
+                              Preconditions  Be logged in with Administrator access
+Alternative Flows and Exceptions
+                                             .A1. Invalid configuration entered
+                                             .System displays validation error 
+                                             .A2. System save failure occurs
+                                             .System displays error message 
+
+non functional requirements                   The system shall be easy to use and
+                                                 navigate.
+
+                                              The system shall maintain correct
+                                                 booking and payment records.
+
+The use case diagram (Figure 2.1) illustrates the interaction between actors and the system,
+clearly defining system boundaries and workflows. These interactions reflect the integrated
+booking-payment process described in the problem statement and address issues such as
+fragmented systems and delayed confirmations.
+
+                                                                                              20
+Figure 2.1
+
+2.2 Class Diagrams:
+
+The class diagram represents the static structure of the system and reflects the modular
+architecture defined in Section 1. It models the key entities, their attributes, operations, and
+relationships.
+
+                                                                                                                             21
+Core Classes
+          User (Abstract Class)
+          Attributes: userID, name, email, password
+          Methods: login(), logout(), updateProfile()
+          Customer (inherits User)
+          Methods: browseEvents(), bookTicket(), makePayment()
+          Organizer (inherits User)
+          Methods: createEvent(), updateEvent(), manageTickets()
+          Admin (inherits User)
+          Methods: manageUsers(), generateReports(), monitorSystem()
+          Event
+          Attributes: eventID, title, date, venue, ticketCategories, availability
+          Methods: updateEventDetails(), checkAvailability()
+          Ticket
+          Attributes: ticketID, category, price, seatNumber, status
+          Booking
+          Attributes: bookingID, bookingDate, status
+          Methods: createBooking(), confirmBooking(), cancelBooking()
+          Payment
+          Attributes: paymentID, amount, paymentMethod, paymentStatus
+          Methods: processPayment()
+          Notification
+          Methods: sendConfirmation(), sendReminder()
+
+Key Relationships
+          A User (Customer) can create multiple Bookings (One-to-Many)
+          A Booking contains one or more Tickets (Composition)
+          An Event has multiple Tickets (One-to-Many)
+          A Booking is associated with one Payment (One-to-One)
+          Notification observes booking or event changes (supports Observer pattern)
+
+The class diagram (Figure 2.2) reflects object-oriented principles such as inheritance,
+encapsulation, and abstraction. It also prepares the foundation for applying design patterns
+such as Factory Method, Strategy, and Observer in later sections
+
+                                                                                                                             22
+Figure 2.2
+
+2.3 Entity Relationship Diagram (ERD)
+
+The ERD defines how data is structured and stored in the system database, ensuring data
+integrity and consistency across booking and payment processes.
+
+Main Entities
+ User (userID, name, email, password, role)
+ Event (eventID, title, date, venue)
+ Ticket (ticketID, category, price, availability)
+ Booking (bookingID, userID, eventID, bookingDate, status)
+ Payment (paymentID, bookingID, amount, status)
+
+Relationships:
+ One User can have many Bookings (1:M)
+ One Event can have many Tickets (1:M)
+ One Booking is linked to one Payment (1:1)
+ A Booking connects Users and Events (associative relationship)
+
+The ERD (Figure 2.3) ensures that booking, payment, and event data are centrally managed,
+addressing the problem of fragmented systems identified in the problem statement. It also
+supports real-time updates to ticket availability, reducing the risk of inconsistencies and double
+booking.
+
+                                                                                                                             23
+24
+Figure 2.3
+
+2.4 Object Diagrams
+
+The object diagram provides a runtime snapshot of the system by illustrating actual instances
+of classes and their relationships during a booking transaction.
+Example Scenario
+A customer books a ticket for an event:
+
+    Customer object:
+          Customer: Fatima (userID: U001)
+
+Event object:
+          Event: Concert A (eventID: E101)
+
+Booking object:
+          Booking: B5001 (status: Confirmed)
+
+Ticket object:
+      Ticket: VIP Seat A1 (status: Reserved)
+
+Payment object:
+          Payment: P9001 (status: Successful)
+
+This snapshot demonstrates how objects interact during execution, particularly how booking
+and payment are tightly coupled to maintain transaction consistency.
+The object diagram (Figure 2.4) validates the correctness of the class relationships and
+ensures that real-world scenarios are properly supported by the design.
+
+                                                                                                                             25
+Figure 2.4
+
+2.5 Sequence diagram
+
+The diagram features several lifelines representing the entities involved in the process:
+* Customer: The external actor initiating the request.
+* Web/App UI: The interface the user interacts with.
+* Booking System: The primary backend controller.
+* Event Module: Manages event data and availability.
+* Booking Module: Handles the creation and confirmation of reservations.
+* Payment Module & Strategy: Manages the financial transaction logic.
+* Notification Service: Handles outgoing alerts to the user.
+
+                                                                                                                             26
+The Workflow Phases
+1. Discovery and Selection
+The process begins with the Customer browsing events. The UI requests a list from the Event
+Module, which is displayed back to the user. Once the user selects a specific event and ticket,
+the system checks the availability of that eventID.
+2. Conditional Logic (Alt Fragment)
+The diagram uses an "alt" (alternative) combined fragment to handle two different scenarios
+based on ticket availability:
+* Scenario A: [Tickets Available]
+* Booking: The user confirms the booking. the Booking Module is triggered to create a record
+and communicates with the Event Module to reserve the ticket.
+* Payment: The user initiates payment. The Payment Module uses a Payment Strategy to
+process the amount.
+* Confirmation: Once payment is successful, the Booking Module confirms the status, and the
+Notification Service sends an Email/SMS to the customer.
+* Scenario B: [Tickets Not Available]
+* If the initial check or reservation fails, the Web/App UI displays an error message.
+* The process ends with a "Booking Failed" notification to the Customer.
+
+                                                                                                                             27
+Key Technical Notations
+* Solid Lines with Arrows: Represent synchronous message calls.
+* Dashed Lines with Arrows: Represent return messages (data being sent back to the caller).
+* Alt Box: Represents conditional logic, similar to an "if-else" statement in programming.
+
+3. Design concepts and requirements
+
+3.1 Design Concepts
+
+3.1.1 Abstraction
+
+This design concept is implemented in the following modules :
+         · User Management
+
+The User Management module abstracts all user-related operations including registration,
+authentication, and profile management. It hides the internal code of user data, only showing a
+simple interface to work with.
+
+         · Event Management
+The Event Management module abstracts the creation, updating, and management of event
+information. It encapsulates event details like schedules, venues, and ticket availability to insure
+that the other modules can interact with events without dealing with data complexity.
+
+         · Booking
+The Booking module abstracts the reservation process. it manages ticket selection, booking
+creation, and status updates. It simplifies the interaction between users and events by handling
+all booking logic internally.
+
+         · Payment
+The Payment module abstracts the processing of financial transactions. It provides a simple
+interface to handle payments while hiding the details of implementing the payment methods and
+transaction processing mechanisms.
+
+         · Notification
+The Notification module abstracts the communication process between the system and users.
+It manages the sending of confirmations, reminders, and updates without exposing the process
+of send operations.
+
+         · Reporting
+The Reporting module abstracts the generation of system and event related reports. It hides
+the mechanism of processing and sending reports.
+
+                                                                                                                             28
+3.1.2 Modularity
+
+This design concept is implemented in the following modules:
+         · User Management
+
+The User Management module handles authentication and user data.
+         · Event Management
+
+The Event Management module handles event creation and updates
+         · Booking
+
+The Booking module manages ticket reservation processes.
+         · Payment
+
+The Payment module handles transaction processing separately.
+         · Notification
+
+The Notification module manages user communication.
+         · Reporting
+
+The Reporting module generates system and operational reports.
+
+This separation ensures that each module functions independently while contributing to the
+overall system.
+
+3.1.2.1 High cohesion
+
+This feature in modularity is implemented in the following modules :
+         · User Management
+
+The User Management module handles only user-related operations
+         · Event Management
+
+the Event Management module focuses solely on event handling.
+
+                                                                                                                             29
+         · Booking
+The Booking module is responsible only for ticket reservation processes.
+
+         · Payment
+the Payment module handles only financial transactions.
+
+         · Notification
+The Notification module is dedicated to sending system messages.
+
+         · Reporting
+the Reporting module focuses on generating reports.
+
+Each module is designed to focus on a single responsibility.
+
+3.1.2.2 Low coupling
+
+This feature in modularity is implemented in the following modules :
+         · User Management
+         · Event Management
+         · Booking
+         · Payment
+         · Notification
+         · Reporting
+
+The modules interact with each other through the interface/code with minimal dependency on
+internal implementations.
+
+3.1.3 Encapsulation
+
+This design concept is implemented in the following modules :
+         · User Management
+         · Event Management
+         · Booking
+         · Payment
+         · Notification
+         · Reporting
+
+Each module hides its internal data and exposes only necessary operations through the
+interface.
+
+                                                                                                                             30
+3.1.4 Functional independence
+
+This design concept is implemented in the following modules :
+         · User Management
+         · Event Management
+         · Booking
+         · Payment
+         · Notification
+         · Reporting
+
+Each module is designed to operate independently while still contributing to the overall system
+workflow, which is strongly related to modularity.
+
+3.1.5 Refinement
+
+This design concept is implemented across the system design.
+It is implemented by developing the design from a simple idea to more detailed structures. First
+was the overall booking process in the system overview and use case diagram (Figure 2.1),
+then it breaks into modules such as User Management, Event Management, Booking, and
+Payment. And it is further refined into classes in the class diagram (Figure 2.2), then into data
+structures in the ERD (Figure 2.3), and finally shown as real examples of objects in the object
+diagram (Figure 2.4).
+
+3.2 Functional Requirements
+
+3.2.1 Functional needs for Customer
+
+· The system shall allow customers to create accounts and log in.
+· Customers shall be able to manage their profiles and view booking history.
+· Customers shall be able to browse, search, and view event details.
+· Customers shall be able to select tickets and make bookings.
+· Customers shall be able to make online payments.
+· Customers shall receive booking confirmation after successful payment.
+
+                                                                                                                             31
+· Customers shall be able to view booking status and receive notifications.
+
+3.2.2 Functional needs for Event Organizers
+
+· Organizers shall be able to log in.
+· Organizers shall be able to create, update, and delete events.
+· Organizers shall be able to manage ticket categories, pricing, and availability.
+· Organizers shall be able to monitor bookings for their events.
+· Organizers shall be able to view event-related reports.
+
+3.2.3 Functional needs for Event Administrators
+
+· Administrators shall be able to log in.
+· Administrators shall be able to manage user accounts.
+· Administrators shall be able to monitor bookings and payments.
+· Administrators shall be able to maintain overall system control.
+
+3.3 Non-Functional Requirements
+
+3.3.1 Performance Requirements
+
+· The system shall respond quickly during event browsing and booking.
+
+3.3.2 Security Requirements
+
+· The system shall protect payment and user data.
+
+3.3.3 Usability Requirements
+
+· The system shall be easy to use and navigate.
+
+                                                                                                                             32
+3.3.4 Reliability Requirements
+
+· The system shall maintain correct booking and payment records.
+
+4. Proposed Design Patterns
+
+This chapter presents the proposed design patterns used in the E-Commerce Event Booking
+System. The selected patterns are Factory Method, Strategy, and Observer, because they
+directly support major system components such as user-role creation, payment processing, and
+notification handling in a modular and extensible way.
+Following the software design principles discussed earlier, these patterns improve abstraction,
+reduce coupling, and support future scalability. In particular, Factory Method helps centralize
+object creation, Strategy encapsulates interchangeable payment algorithms, and Observer
+enables automatic notification when booking or event state changes.
+
+a. Design Pattern 1: Factory Method Pattern
+The Factory Method Pattern is a creational design pattern that defines an interface for creating
+objects while allowing subclasses or factory logic to decide which concrete class to instantiate. It
+is appropriate when a system must create different objects that share a common abstraction but
+differ in behavior or responsibility.
+In the proposed event booking system, the Factory Method Pattern is applied to the User
+Management module to dynamically create user-role objects such as Customer, Organizer, and
+Admin. This keeps role creation separate from registration and authentication logic, which
+supports modularity and cleaner maintenance.
+
+i. Function or software component affected
+
+The Factory Method Pattern mainly affects the following software components:
+     User registration component, where the system creates a new user object based on the
+         selected role.
+     Authentication and access control component, where role-specific behavior is initialized
+         after successful login.
+     Role management component, where each user type is associated with distinct
+         permissions and operations.
+
+                                                                                                                             33
+In this design, the abstract User class acts as the common product type, while Customer,
+Organizer, and Admin are concrete products returned by UserFactory. This follows the lecture
+definition that the creator encapsulates knowledge of which concrete class should be
+instantiated.
+
+ii. Description of the workflow or data flow
+The workflow for the Factory Method Pattern in this project is as follows:
+
+    1. A user selects a role during account registration or the system reads the stored role
+         during login.
+
+    2. The registration or authentication module sends the role value to UserFactory.
+    3. UserFactory evaluates the role and creates the corresponding concrete object such as
+
+         Customer, Organizer, or Admin.
+    4. The created object is returned to the calling service.
+    5. The system grants access to role-specific functions such as booking events, managing
+
+         event listings, or generating reports.
+This flow reduces direct dependency between the main system logic and concrete user
+subclasses. Instead of scattering conditional creation logic across controllers, object creation is
+centralized in a single factory component.
+
+iii. Sample class diagram
+Below is a suitable sample class diagram in Mermaid notation.
+
+                                                                                                                             34
+iv. Sample other UML notations:
+
+Sequence diagram: 
+                                                                                                                             35
+v. Sample potential code:
+
+public abstract class User
+{
+
+   public string UserId { get; set; }
+   public string Name { get; set; }
+   public string Email { get; set; }
+   public string Password { get; set; }
+
+   public abstract void AccessDashboard();
+}
+
+// Concrete products
+public class Customer : User
+{
+
+   public override void AccessDashboard()
+   {
+
+      Console.WriteLine("Access Customer Dashboard");
+   }
+}
+
+public class Organizer : User
+{
+
+   public override void AccessDashboard()
+   {
+
+      Console.WriteLine("Access Organizer Dashboard");
+   }
+}
+
+public class Admin : User
+{
+
+   public override void AccessDashboard()
+   {
+
+      Console.WriteLine("Access Admin Dashboard");
+   }
+}
+
+// Creator / Factory
+public static class UserFactory
+{
+
+   public static User CreateUser(string role)
+   {
+
+      switch (role.ToLower())
+      {
+
+                                                                                                                             36
+          case "customer":
+             return new Customer();
+
+          case "organizer":
+             return new Organizer();
+
+          case "admin":
+             return new Admin();
+
+          default:
+             throw new ArgumentException("Invalid role");
+
+      }
+   }
+}
+
+// Demo
+public class FactoryDemo
+{
+
+   public static void Main(string[] args)
+   {
+
+      User user = UserFactory.CreateUser("customer");
+      user.AccessDashboard();
+   }
+}
+
+This code demonstrates how the factory centralizes object creation and returns a common User
+reference while still producing role-specific behavior through polymorphism. That aligns with the
+lecture explanation that Factory Method hides how concrete instances are created and
+assembled.
+
+vi. Benefit
+
+The Factory Method Pattern provides several benefits in this project:
+     It centralizes user-role creation in one location, making the system easier to
+         maintain.
+     It reduces repeated conditional logic in registration and authentication modules.
+     It supports extensibility, because a future role such as Auditor or Staff can be
+         added with minimal impact on the rest of the system.
+     It preserves abstraction by allowing the rest of the system to work with the User
+         type rather than concrete subclasses.
+
+vii. Limitations
+
+The Factory Method Pattern also has some limitations:
+
+                                                                                                                             37
+     If many roles are added, the factory can become large and harder to manage.
+     The system may still need updates to the factory logic whenever a new role is
+
+         introduced, especially in a parameterized factory approach.
+     For very simple systems, the pattern can introduce more classes than necessary.
+
+b. Design Pattern 2: Strategy Pattern
+
+The Strategy Pattern is a behavioral design pattern that defines a family of algorithms, encapsulates
+each one, and makes them interchangeable. It is suitable when a class needs different variants of a
+behavior without embedding many conditional statements inside the context class.
+
+In the event booking system, Strategy is applied to the Payment module so that different payment
+methods such as Credit Card, Online Banking, and E-Wallet can be used without changing the
+checkout logic. This matches the lecture guidance that Strategy is useful when multiple algorithm
+variants exist and should vary independently from clients that use them.
+
+i. Function or software component affected
+
+The Strategy Pattern mainly affects:
+      Payment processing, where different payment algorithms are needed.
+      Checkout workflow, where the system delegates payment execution to the selected
+          strategy.
+      Booking confirmation logic, which depends on payment success before confirming a
+          booking.
+
+In this design, PaymentStrategy defines the common interface, while CreditCardStrategy,
+OnlineBankingStrategy, and EWalletStrategy are concrete strategies. The PaymentContext holds a
+reference to the selected strategy and delegates execution to it.
+
+ii. Description of workflow or data flow
+
+The Strategy Pattern workflow is as follows:
+     1. The customer selects tickets and proceeds to checkout.
+     2. The system calculates the total payment amount.
+     3. The customer chooses a payment method such as Credit Card, Online Banking, or E-Wallet.
+     4. The checkout module creates or assigns the corresponding strategy object.
+     5. PaymentContext calls the selected strategy's pay() method.
+     6. If payment is successful, the booking status is updated to confirmed and a notification can be
+          triggered.
+
+This approach keeps the payment behavior flexible and removes complex if-else chains from the
+main booking logic. That directly reflects the lecture point that Strategy can eliminate conditional
+statements and provide a family of related algorithms.
+
+                                                                                                                             38
+iii. Sample class diagram:
+
+                                                                                                                      
+iv. Sample other UML notations
+Sequence diagram :
+
+                                                                                                                             39
+v. Sample potential code:
+
+      Console.WriteLine(
+          $"Paid RM{amount} using Online Banking - {_bankName}"
+
+      );
+   }
+}
+
+// Concrete strategy 3 ­ E-Wallet
+public class EWalletStrategy : IPaymentStrategy
+{
+
+   private readonly string _walletId;
+
+   public EWalletStrategy(string walletId)
+   {
+
+      _walletId = walletId;
+   }
+
+   public void Pay(decimal amount)
+   {
+
+      Console.WriteLine(
+          $"Paid RM{amount} using E-Wallet ID: {_walletId}"
+
+      );
+
+                                                                                                                             40
+   }
+}
+
+// Context
+public class PaymentContext
+{
+
+   private IPaymentStrategy? _strategy;
+
+   public void SetStrategy(IPaymentStrategy strategy)
+   {
+
+      _strategy = strategy;
+   }
+
+   public void ProcessPayment(decimal amount)
+   {
+
+      if (_strategy == null)
+      {
+
+          Console.WriteLine("Payment method not selected.");
+          return;
+      }
+
+      _strategy.Pay(amount);
+   }
+}
+
+// Demo
+public class StrategyDemo
+{
+
+   public static void Main(string[] args)
+   {
+
+      var payment = new PaymentContext();
+
+      // Scenario 1: Pay with E-Wallet
+      payment.SetStrategy(new EWalletStrategy("EW123"));
+      payment.ProcessPayment(120.00m);
+
+      // Scenario 2: Switch to Credit Card
+      payment.SetStrategy(new CreditCardStrategy("Fatima", "1234567812345678"));
+      payment.ProcessPayment(45.00m);
+   }
+}
+
+
+This sample shows how the context delegates payment processing to interchangeable strategy
+
+                                                                                                                             41
+implementations. That preserves flexibility while keeping the PaymentContext independent of
+specific payment algorithms.
+
+vi. Benefit
+The Strategy Pattern gives important benefits:
+
+     It separates payment logic from checkout logic, improving maintainability.
+     It supports the Open-Closed Principle because new payment methods can be added
+
+         without modifying the context class heavily.
+     It reduces long conditional branches in payment processing.
+     It makes the system more adaptable to future payment gateways or simulation methods.
+
+vii. Limitations
+The Strategy Pattern also has limitations:
+
+     The client or controller must know which strategy to choose.
+     It increases the number of classes because each payment type becomes a separate
+
+         strategy class.
+     For very few payment methods, the added abstraction may feel slightly excessive.
+
+c. Design Pattern 3: Observer Pattern
+
+The Observer Pattern is a behavioral design pattern that defines a one-to-many dependency so
+that when one object changes state, all dependent objects are notified and updated
+automatically. It is especially suitable when a subject must notify multiple receivers without
+tightly coupling itself to them.
+
+In the event booking system, Observer is applied to the Booking and Notification modules.
+When a booking is confirmed, cancelled, or rescheduled, the system can notify interested
+components such as the customer, organizer, and administrator automatically.
+
+i. Function or software component affected
+The Observer Pattern affects:
+
+     Booking status management, where a booking changes state.
+     Notification module, which sends confirmation or update messages.
+     Administrative monitoring, where system staff may need to observe important booking
+
+         events.
+In this design, Booking acts as the Subject, while CustomerObserver, OrganizerObserver, and
+AdminObserver act as concrete observers. This follows the lecture model where the subject
+maintains observers and notifies them after state changes.
+
+                                                                                                                             42
+ii. Description of workflow or data flow
+The Observer workflow is as follows:
+
+    1. A customer creates a booking for an event.
+    2. Relevant observers such as customer notification service, organizer dashboard, or
+
+         admin monitor are attached to the booking.
+    3. The booking status changes, for example from Pending to Confirmed, Cancelled, or
+
+         Rescheduled.
+    4. The Booking object triggers notifyObservers().
+    5. Each observer receives the update and performs its own action, such as sending a
+
+         confirmation email, updating the organizer view, or recording an administrative log.
+This design supports publish-subscribe communication and avoids hardwiring notification
+behavior directly into the booking class. That aligns with the lecture's explanation that an object
+should notify others without needing to know their concrete types.
+iii. Sample class diagram
+
+                                                                                                                             43
+Iv. sample other uml diagram
+Sequence Diagram :
+
+v. sample code
+using System;
+using System.Collections.Generic;
+// Observer interface
+public interface IObserver
+
+                                                                                                                             44
+{
+   void Update(string bookingId, string status);
+
+}
+
+// Subject interface
+public interface ISubject
+{
+
+   void Attach(IObserver observer);
+   void Detach(IObserver observer);
+   void NotifyObservers();
+}
+
+// Concrete subject
+public class Booking : ISubject
+{
+
+   private readonly List<IObserver> _observers = new();
+   public string BookingId { get; }
+   public string Status { get; private set; }
+
+   public Booking(string bookingId)
+   {
+
+      BookingId = bookingId;
+      Status = "Pending";
+   }
+
+   public void SetStatus(string newStatus)
+   {
+
+      Status = newStatus;
+      NotifyObservers();
+   }
+
+   public void Attach(IObserver observer)
+   {
+
+      _observers.Add(observer);
+   }
+
+   public void Detach(IObserver observer)
+   {
+
+      _observers.Remove(observer);
+   }
+
+   public void NotifyObservers()
+   {
+
+      foreach (var observer in _observers)
+
+                                                                                                                             45
+      {
+          observer.Update(BookingId, Status);
+
+      }
+   }
+}
+
+// Concrete observers
+public class CustomerObserver : IObserver
+{
+
+   public void Update(string bookingId, string status)
+   {
+
+      Console.WriteLine($"[Customer] Booking {bookingId} is now {status}");
+   }
+}
+
+public class OrganizerObserver : IObserver
+{
+
+   public void Update(string bookingId, string status)
+   {
+
+      Console.WriteLine($"[Organizer] Booking {bookingId} is now {status}");
+   }
+}
+
+public class AdminObserver : IObserver
+{
+
+   public void Update(string bookingId, string status)
+   {
+
+      Console.WriteLine($"[Admin] Log: Booking {bookingId} changed to {status}");
+   }
+}
+
+// Demo
+public class ObserverDemo
+{
+
+   public static void Main(string[] args)
+   {
+
+      var booking = new Booking("B5001");
+
+      booking.Attach(new CustomerObserver());
+      booking.Attach(new OrganizerObserver());
+      booking.Attach(new AdminObserver());
+
+      booking.SetStatus("Confirmed");
+      booking.SetStatus("Rescheduled");
+
+                                                                                                                             46
+   }
+}
+
+This sample shows the booking object as the subject and multiple observers reacting
+automatically when the booking status changes. It illustrates the publish-subscribe
+behavior emphasized in the Observer lecture material.
+
+vi.Benefits
+The Observer Pattern offers these benefits:
+
+     It supports real-time update behavior for booking notifications.
+     It reduces coupling because the booking object does not need to know the
+
+         internal details of notification receivers.
+     It allows multiple parties to react to the same event, which suits customer,
+
+         organizer, and admin monitoring needs.
+     It improves extensibility because new observer types can be added later without
+
+         redesigning the booking class.
+
+vii.Limitations
+Its limitations include:
+
+     If observers are not managed carefully, unnecessary notifications may occur.
+     A large number of observers may increase runtime overhead.
+     Debugging can be harder because updates happen indirectly through notification
+
+         chains.
+
+d. Design Pattern 4: Facade Pattern
+
+The Facade Pattern is a structural design pattern that provides a simplified interface to a
+complex subsystem of classes. In this project, the Facade pattern is used to provide a single
+entry point for the entire booking process, orchestrating the interactions between the User
+Factory, Payment Strategy, and Booking Observer modules. This follows the principle of hiding
+system complexity from the client.
+
+i. Function or software component affected
+·System Entry Point: Acts as the primary interface for client applications to interact with the
+backend.
+·Subsystem Orchestration: Coordinates the sequence of operations between user creation,
+payment processing, and status notifications.
+·Client Logic: Significantly reduces the complexity of client-side code by providing a unified API.
+
+ii. Description of workflow or data flow
+
+                                                                                                                             47
+1.The client calls a single method, such as ProcessFullBooking(), on the BookingFacade.
+2.The Facade uses the UserFactory to retrieve or initialize the user object.
+3.The Facade creates a Booking instance and attaches the relevant Observers (Customer,
+Organizer, Admin).
+4.The Facade sets the appropriate PaymentStrategy in the PaymentContext based on user
+input.
+5.The Facade executes the payment; upon success, it updates the booking status, which
+automatically triggers the Observer notifications.
+iii. Sample class diagram
+
+                                                                                                                             48
+Iv. sample other uml diagram
+Sequence Diagram :
+
+                                                                                                                             49
+v. sample code
+public class BookingFacade
+{
+
+   private readonly PaymentContext _paymentContext = new();
+
+   public void ProcessFullBooking(string role, string paymentType, decimal amount)
+   {
+
+      // 1. Use Factory to handle user
+      var user = UserFactory.CreateUser(role);
+
+      // 2. Initialize Booking (Subject)
+      var booking = new Booking("B" + Guid.NewGuid().ToString().Substring(0, 5));
+      booking.Attach(new CustomerObserver());
+      booking.Attach(new AdminObserver());
+
+      // 3. Use Strategy for Payment
+      if (paymentType == "EWallet")
+
+                                                                                                                             50
+          _paymentContext.SetStrategy(new EWalletStrategy("EW-99"));
+
+      _paymentContext.ProcessPayment(amount);
+
+      // 4. Trigger Observer notifications
+      booking.SetStatus("Confirmed");
+      Console.WriteLine("Facade: Booking process completed successfully.");
+   }
+}
+
+vi. Benefit
+·Simplification: Provides a simple interface for complex multi-step processes.
+·Decoupling: The client does not need to know about the Factory, Strategy, or Observer
+internals.
+·Maintainability: Changes to the internal workflow only need to be updated in the Facade.
+vii. Limitations
+·Risk of "God Object": The Facade can become overly complex if it handles too many system
+responsibilities.
+·Limited Flexibility: Advanced clients might find the simplified interface too restrictive if they
+need direct access to subsystem features.
+
+5. Conclusion and Suggestions
+
+5.1 Conclusion
+
+The E-Commerce Event Booking System was designed to address the practical problems
+of manual or fragmented ticketing processes by providing an integrated, web based
+platform for event discovery, reservation, and secure payment . The proposed
+architecture separates the system into cohesive modules User Management, Event
+Management, Booking, Payment, Notification, and Reporting to reflect key software
+design concepts such as abstraction, modularity, and functional independence from the
+lecture materials.
+
+Through the use of structured UML models, the report demonstrates how the system
+supports the complete transaction flow from browsing events to receiving booking
+
+                                                                                                                             51
+confirmation. Use case diagrams capture the main interactions for customers,
+organizers, and administrators, while the class diagram, ERD, object diagram, and
+sequence diagram together describe the static structure, data relationships, runtime
+object snapshots, and dynamic workflows of the system. This modeling approach shows
+that the design can handle core concerns such as accurate ticket availability, consistent
+booking records, and role based access under varying load .
+
+At the code design level, the inclusion of Factory Method, Strategy, and Observer
+patterns further improves flexibility and maintainability. Factory Method centralizes
+user role creation so that adding new roles does not require major changes to the
+authentication flow, while Strategy decouples payment algorithms from the checkout
+logic and supports multiple payment methods in line with the Open-Closed Principle.
+Observer is used conceptually to support notifications for booking confirmations,
+schedule changes, and reminders, reducing coupling between booking logic and
+notification delivery .
+
+Overall, the project achieves its objectives by presenting a realistic and modular design
+for an event ticketing platform that is both academically manageable and technically
+sound. The design can be extended in future work by incorporating additional payment
+gateways, advanced fraud detection, personalized recommendations, and mobile native
+user interfaces, without requiring a complete redesign of the existing architecture .
+
+5.2 Suggestions for Future Enhancement
+
+Although the proposed system is sufficient for the current project objectives, several future
+enhancements can be introduced to improve its usability, scalability, and real-world value. These
+suggestions build upon the current design without changing its fundamental architecture.
+
+The first suggested improvement is the addition of real-time seat selection and seat-locking
+mechanisms for events that involve reserved seating. This would allow customers to choose
+exact seats visually and would reduce booking conflicts during high-demand transactions. Such
+a feature would strengthen the reliability and realism of the booking process.
+
+The second enhancement is the support for additional payment gateways and automated refund
+processing. Since the payment module already applies the Strategy Pattern, the system can be
+extended to support more payment methods such as online banking gateways, e-wallet
+providers, and future digital payment services without major redesign. This makes the system
+more flexible and ready for broader deployment.
+
+Another useful enhancement is the inclusion of advanced dashboards and analytics for
+organizers and administrators. For example, the system could provide reports on ticket sales
+trends, customer demand, popular event categories, cancellation behavior, and peak booking
+times. This would improve decision-making and increase the strategic value of the platform for
+event managers.
+
+                                                                                                                             52
+The system can also be improved by introducing mobile-responsive design or a dedicated
+mobile application. Since many users rely on mobile devices for quick online transactions,
+especially for events with limited ticket availability, a mobile-friendly interface would significantly
+improve convenience and accessibility.
+
+Finally, the system can be extended with QR-code ticket generation and digital ticket validation
+at the event venue. This feature would connect the online booking system with the physical
+event attendance process, improve security against ticket duplication, and provide a more
+complete end-to-end event management solution.
+
+In summary, these future enhancements show that the proposed system is not limited to the
+current academic scope. Instead, it serves as a scalable foundation that can be extended into a
+more intelligent, secure, and feature-rich event-commerce platform in the future. This
+forward-looking potential makes the project more exciting, more relevant, and more meaningful
+beyond the classroom context.
+
+6. Bibliography / Reference
+
+    1. Gamma, E., Helm, R., Johnson, R., and Vlissides, J. Design Patterns: Elements of
+         Reusable Object-Oriented Software. Addison-Wesley, 1994. :
+         https://books.google.com/books/about/Design_Patterns.html?id=6oHuKQe3TjQC
+
+    2. Guo, Z. S., Siu, W. I., and Wong, C. T. Full-scale Online Event Ticketing System: The
+         Design and Implementation:
+         https://www.fst.um.edu.mo/en/staff/documents/utako/guo2002_eticket.pdf
+
+    3. Grebenshchikov, I., Ivanova, T., and Batchkova, I. "Information Modeling of Online Air
+         Tickets Reservation System." Science, Business, Society,
+         https://stumejournals.com/journals/sbs/2016/3/54.full.pdf
+
+    4. Piriyah, N. et al. "Vedaz Event Management Booking System with TOTP." Applied
+         Information Technology and Computer Science, 2025. :
+         https://publisher.uthm.edu.my/periodicals/index.php/aitcs/article/view/18853
+
+    5. "Online Ticket Reservation System SRS, ERD, DFD, Structured
+         Charts."https://www.slideshare.net/slideshow/online-ticket-reservation-systemsrs-erd-dfd
+         -structured-charts/250905800
+
+    6. CSE 6234 ­ Software Design.
+         Lecture Slides 1­6 (Software Design Concepts, Design Principles, Design
+         Patterns, Structural and Behavioral Design Patterns).
+
+
+
+
+
+                                                                                                                             53
+
